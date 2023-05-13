@@ -87,7 +87,7 @@ namespace Task3.Controllers
         }
 
         #endregion
-        #region Login AS Doctor
+        #region Login 
         [HttpPost]
         [Route("Login")]
         public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
@@ -115,33 +115,7 @@ namespace Task3.Controllers
 
         #endregion
 
-        #region Login AS Student
-        [HttpPost]
-        [Route("LoginForStudent")]
-        public async Task<ActionResult<TokenDto>> LoginAsStudent(LoginDto credentials)
-        {
-            var user = await _userManager.FindByNameAsync(credentials.Name);
-            if (user == null)
-            {
-                // you can send a message
-                return BadRequest();
-            }
-
-            bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
-            if (!isPasswordCorrect)
-            {
-                // you can send a message
-                return BadRequest();
-            }
-
-            var claimsList = await _userManager.GetClaimsAsync(user);
-            return GenerateToken(claimsList);
-
-
-        }
-
-
-        #endregion
+        
         #region Helpers
 
         private TokenDto GenerateToken(IList<Claim> claimsList)
